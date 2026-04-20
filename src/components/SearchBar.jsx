@@ -1,13 +1,16 @@
+import { useFilter } from "../store/useFilter"
 
 
-export default function SearchBar({countryName, onSearch}) {
+export default function SearchBar() {
 
+const countryName = useFilter((state) => state.countryName)
+const findCountry = useFilter((state) => state.findCountry)
 
   return (
     <div>
       <div>
         <label htmlFor="name">🔎</label>
-        <input type="text" name="name" id="name" value={countryName} onChange={(e) => onSearch(e.target.value)}/>
+        <input value={countryName} onChange={(e) => findCountry(e.target.value)} type="text" name="name" id="name"/>
       </div>
     </div>
   )
