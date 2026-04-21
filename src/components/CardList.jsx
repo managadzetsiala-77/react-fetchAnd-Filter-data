@@ -9,16 +9,27 @@ const URL =
 export default function CardList({}) {
   const { data } = useFetch(URL);
   const countryName = useFilter((state) => state.countryName);
+  const regionName = useFilter((state) => state.regionName);
 
   console.log(countryName);
 
-  const filteredData = useMemo(() => {
-    const name = countryName !== "";
-    if (name) {
-      return data.filter((item) => item.name.common.toLowerCase().includes(countryName.toLowerCase().trim()));
-    }
-    return data;
-  }, [countryName, data]);
+  const filteredData = useMemo(() =>  {
+    return data.filter((item) => {
+      const matchName =
+        countryName === ""
+          ? true
+          : item.name.common
+              .toLowerCase()
+              .includes(countryName.toLowerCase().trim());
+  
+      const matchRegion =
+        regionName === "" || regionName === "All"
+          ? true
+          : item.region === regionName;
+  
+      return matchName && matchRegion;
+    });
+  }, [countryName, regionName, data]);
 
   return (
     <div
